@@ -8,7 +8,7 @@
 
 #import "IMGLYPhotoProcessor.h"
 
-#import <NEGPUImage/GPUImage.h>
+#import "GPUImage.h"
 
 @interface IMGLYPhotoProcessor ()
 

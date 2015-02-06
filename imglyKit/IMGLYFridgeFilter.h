@@ -7,7 +7,7 @@
 //
 
 
-#import <NEGPUImage/GPUImage.h>
+#import "GPUImage.h"
 
 @interface IMGLYFridgeFilter : GPUImageToneCurveFilter
 

@@ -53,7 +53,7 @@
 #import "IMGLYX400Filter.h"
 
 
-#import <NEGPUImage/GPUImage.h>
+#import "GPUImage.h"
 
 @implementation IMGLYFilter
 

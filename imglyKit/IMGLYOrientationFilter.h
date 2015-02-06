@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <NEGPUImage/GPUImage.h>
+#import "GPUImage.h"
 
 typedef NS_ENUM(NSInteger, IMGLYRotationAngle) {
     IMGLYRotationAngle0,

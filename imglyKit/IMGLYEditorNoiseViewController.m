@@ -16,7 +16,7 @@
 
 extern CGFloat kSliderheight ;
 extern CGFloat kSliderXMargin ;
-const static CGFloat kMaximumNoiseValue = 0.5;
+const static CGFloat kMaximumNoiseValue = 0.25;
 
 @interface IMGLYEditorNoiseViewController()
 

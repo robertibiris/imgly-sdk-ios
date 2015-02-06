@@ -8,12 +8,12 @@
 
 #import "IMGLYOpenGLUtils.h"
 
-#import <NEGPUImage/GPUImage.h>
+#import "GPUImage.h"
 
 @implementation IMGLYOpenGLUtils
 
 + (GLint)maximumTextureSizeForThisDevice {
-    return [GPUImageContext maximumTextureSizeForThisDevice];
+    return 1024; //[GPUImageOpenGLESContext maximumTextureSizeForThisDevice];
 }
 
 @end

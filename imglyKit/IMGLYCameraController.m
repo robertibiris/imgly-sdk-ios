@@ -14,7 +14,7 @@
 #import "IMGLYFilter.h"
 #import "IMGLYLiveStreamFilterManager.h"
 
-#import <NEGPUImage/GPUImage.h>
+#import "GPUImage.h"
 #import <QuartzCore/QuartzCore.h>
 
 static CGFloat const kIMGLYIndicatorSize = 50;

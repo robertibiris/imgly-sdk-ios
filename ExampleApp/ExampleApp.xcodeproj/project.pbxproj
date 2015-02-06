@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		098ACA8C1A6949610042747C /* libGPUImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 098ACA8B1A6949610042747C /* libGPUImage.a */; };
 		6412CA47183A6DDE00C828DF /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6412CA46183A6DDE00C828DF /* Images.xcassets */; };
 		646A0551183BB73D00862AEA /* libimglyKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 646A054D183BB6E600862AEA /* libimglyKit.a */; };
 		64B8460F18ABDDA300F3B683 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 64B8460E18ABDDA300F3B683 /* libz.dylib */; };
@@ -34,6 +35,27 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		098ACA931A6949F80042747C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 098ACA8D1A6949F80042747C /* GPUImage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BCF1A33414DDB1EC00852800;
+			remoteInfo = GPUImage;
+		};
+		098ACA951A6949F80042747C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 098ACA8D1A6949F80042747C /* GPUImage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BCE209E51943F20C002FEED8;
+			remoteInfo = GPUImageFramework;
+		};
+		098ACA971A694A040042747C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 098ACA8D1A6949F80042747C /* GPUImage.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = BCF1A33314DDB1EC00852800;
+			remoteInfo = GPUImage;
+		};
 		646A054C183BB6E600862AEA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6483C029183BB14B00DE23A8 /* imglyKit.xcodeproj */;
@@ -65,6 +87,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		098ACA891A69492B0042747C /* libNEGPUImage.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libNEGPUImage.a; path = "../../../../Downloads/imgly-sdk-ios-master 2/Vendor/NEGPUImage/libNEGPUImage.a"; sourceTree = "<group>"; };
+		098ACA8B1A6949610042747C /* libGPUImage.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGPUImage.a; path = "/Users/Kastor/Development/imgly-sdk-ios/Vendor/framework/../build/Debug-iphoneos/libGPUImage.a"; sourceTree = "<absolute>"; };
+		098ACA8D1A6949F80042747C /* GPUImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GPUImage.xcodeproj; path = ../Vendor/framework/GPUImage.xcodeproj; sourceTree = "<group>"; };
 		6412CA46183A6DDE00C828DF /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		646A0550183BB71600862AEA /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; name = Podfile; path = ../Podfile; sourceTree = "<group>"; };
 		6483C029183BB14B00DE23A8 /* imglyKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = imglyKit.xcodeproj; path = ../imglyKit.xcodeproj; sourceTree = "<group>"; };
@@ -102,6 +127,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				098ACA8C1A6949610042747C /* libGPUImage.a in Frameworks */,
 				D105BDA918169A3100C46473 /* CoreImage.framework in Frameworks */,
 				D185BB3D17ECC662007A2B49 /* CoreText.framework in Frameworks */,
 				D1DB14D31766136B00D30B72 /* AVFoundation.framework in Frameworks */,
@@ -121,6 +147,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		098ACA8E1A6949F80042747C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				098ACA941A6949F80042747C /* libGPUImage.a */,
+				098ACA961A6949F80042747C /* GPUImage.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		6412CA49183A6DFD00C828DF /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -165,6 +200,8 @@
 		D17E94B11762378000FCC4C5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				098ACA8D1A6949F80042747C /* GPUImage.xcodeproj */,
+				098ACA8B1A6949610042747C /* libGPUImage.a */,
 				D1DB14D21766136B00D30B72 /* AVFoundation.framework */,
 				D17E94B61762378000FCC4C5 /* CoreGraphics.framework */,
 				D105BDA818169A3100C46473 /* CoreImage.framework */,
@@ -198,6 +235,7 @@
 		D17E94B91762378000FCC4C5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				098ACA891A69492B0042747C /* libNEGPUImage.a */,
 				D17E94BA1762378000FCC4C5 /* ExampleApp-Info.plist */,
 				D17E94C01762378000FCC4C5 /* ExampleApp-Prefix.pch */,
 				D17E94BB1762378000FCC4C5 /* InfoPlist.strings */,
@@ -223,6 +261,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				098ACA981A694A040042747C /* PBXTargetDependency */,
 				64F05A60183BC04400337926 /* PBXTargetDependency */,
 				64F05A5E183BC03600337926 /* PBXTargetDependency */,
 			);
@@ -258,6 +297,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = 098ACA8E1A6949F80042747C /* Products */;
+					ProjectRef = 098ACA8D1A6949F80042747C /* GPUImage.xcodeproj */;
+				},
+				{
 					ProductGroup = 646A0547183BB6E600862AEA /* Products */;
 					ProjectRef = 6483C029183BB14B00DE23A8 /* imglyKit.xcodeproj */;
 				},
@@ -270,6 +313,20 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		098ACA941A6949F80042747C /* libGPUImage.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libGPUImage.a;
+			remoteRef = 098ACA931A6949F80042747C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		098ACA961A6949F80042747C /* GPUImage.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = GPUImage.framework;
+			remoteRef = 098ACA951A6949F80042747C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		646A054D183BB6E600862AEA /* libimglyKit.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -365,6 +422,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		098ACA981A694A040042747C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = GPUImage;
+			targetProxy = 098ACA971A694A040042747C /* PBXContainerItemProxy */;
+		};
 		64F05A5E183BC03600337926 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = imglyKitBundle;
@@ -410,7 +472,7 @@
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = "armv7 armv7s";
+				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = Enterprise;
 		};
@@ -430,11 +492,18 @@
 					"\"${PODS_ROOT}/Headers/SVProgressHUD\"",
 				);
 				INFOPLIST_FILE = "ExampleApp/ExampleApp-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/Kastor/Downloads/imgly-sdk-ios-master",
+					2/Vendor/NEGPUImage,
+					"/Users/Kastor/Development/imgly-sdk-ios/Vendor/framework/../build/Debug-iphoneos",
+				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
+				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Enterprise;
@@ -466,7 +535,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
-				VALID_ARCHS = "armv7 armv7s";
+				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = Debug;
 		};
@@ -491,7 +560,7 @@
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = "armv7 armv7s";
+				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = Release;
 		};
@@ -511,11 +580,17 @@
 					"\"${PODS_ROOT}/Headers/SVProgressHUD\"",
 				);
 				INFOPLIST_FILE = "ExampleApp/ExampleApp-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
-				ONLY_ACTIVE_ARCH = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/Kastor/Downloads/imgly-sdk-ios-master",
+					2/Vendor/NEGPUImage,
+					"/Users/Kastor/Development/imgly-sdk-ios/Vendor/framework/../build/Debug-iphoneos",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
+				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -536,11 +611,18 @@
 					"\"${PODS_ROOT}/Headers/SVProgressHUD\"",
 				);
 				INFOPLIST_FILE = "ExampleApp/ExampleApp-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/Kastor/Downloads/imgly-sdk-ios-master",
+					2/Vendor/NEGPUImage,
+					"/Users/Kastor/Development/imgly-sdk-ios/Vendor/framework/../build/Debug-iphoneos",
+				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
+				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

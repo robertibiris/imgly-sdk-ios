@@ -9,7 +9,7 @@
 #import "IMGLYFilter.h"
 
 #import <Foundation/Foundation.h>
-#import <NEGPUImage/GPUImage.h>
+#import "GPUImage.h"
 
 @interface IMGLYLiveStreamFilterManager : NSObject
 

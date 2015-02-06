@@ -42,6 +42,7 @@
     
     [stillImageSource processImage];
     [stillImageSource addTarget:filter];
+    
     return [filter imageByFilteringImage:image];
 }
 
