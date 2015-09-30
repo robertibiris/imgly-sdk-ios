@@ -366,28 +366,36 @@ public class IMGLYCameraController: NSObject {
     
     // MARK: - Flash
     
+    public var supportedFlashModes: [AVCaptureFlashMode] = [.Auto, .On, .Off] {
+        didSet {
+            if supportedFlashModes.count == 0 {
+                fatalError("You have to support at least one flash mode (e.g. .Off)")
+            }
+        }
+    }
+    
     /**
-    Selects the next flash-mode. The order is Auto->On->Off.
-    If the current device does not support auto-flash, this method
-    just toggles between on and off.
+    Selects the next flash-mode. The order is taken from `supportedFlashModes`.
+    If the current device does not support a flash mode, this method uses the next flash mode that is supported or .Off.
     */
     public func selectNextFlashMode() {
-        var nextFlashMode: AVCaptureFlashMode = .Off
+        guard let device = videoDeviceInput?.device else {
+            return
+        }
         
-        switch flashMode {
-        case .Auto:
-            if let device = videoDeviceInput?.device where device.isFlashModeSupported(.On) {
-                nextFlashMode = .On
-            }
-        case .On:
-            nextFlashMode = .Off
-        case .Off:
-            if let device = videoDeviceInput?.device {
-                if device.isFlashModeSupported(.Auto) {
-                    nextFlashMode = .Auto
-                } else if device.isFlashModeSupported(.On) {
-                    nextFlashMode = .On
-                }
+        let currentFlashModeIndex = supportedFlashModes.indexOf(flashMode) ?? 0
+        var nextFlashModeIndex = (currentFlashModeIndex + 1) % supportedFlashModes.count
+        var nextFlashMode = supportedFlashModes[nextFlashModeIndex]
+        var counter = 1
+        
+        while !device.isFlashModeSupported(nextFlashMode) {
+            nextFlashModeIndex = (nextFlashModeIndex + 1) % supportedFlashModes.count
+            nextFlashMode = supportedFlashModes[nextFlashModeIndex]
+            counter++
+            
+            if counter >= supportedFlashModes.count {
+                nextFlashMode = .Off
+                break
             }
         }
         
@@ -695,6 +703,10 @@ public class IMGLYCameraController: NSObject {
     Initializes the camera and has to be called before calling `startCamera()` / `stopCamera()`
     */
     public func setupWithInitialRecordingMode(recordingMode: IMGLYRecordingMode) {
+        setupWithInitialRecordingMode(recordingMode, initialFlashMode: .Auto, initialTorchMode: .Auto)
+    }
+    
+    public func setupWithInitialRecordingMode(recordingMode: IMGLYRecordingMode, initialFlashMode flashMode: AVCaptureFlashMode, initialTorchMode torchMode: AVCaptureTorchMode) {
         if setupComplete {
             return
         }
@@ -723,10 +735,10 @@ public class IMGLYCameraController: NSObject {
             }
             
             if let device = self.videoDeviceInput?.device {
-                if recordingMode == .Photo && device.isFlashModeSupported(.Auto) {
-                    self.flashMode = .Auto
-                } else if recordingMode == .Video && device.isTorchModeSupported(.Auto) {
-                    self.torchMode = .Auto
+                if recordingMode == .Photo && device.isFlashModeSupported(flashMode) {
+                    self.flashMode = flashMode
+                } else if recordingMode == .Video && device.isTorchModeSupported(torchMode) {
+                    self.torchMode = torchMode
                 }
             }
             
