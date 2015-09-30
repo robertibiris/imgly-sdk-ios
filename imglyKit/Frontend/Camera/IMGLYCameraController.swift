@@ -143,7 +143,7 @@ public class IMGLYCameraController: NSObject {
     
     // MARK: - Initializers
     
-    init(previewView: UIView) {
+    public init(previewView: UIView) {
         self.previewView = previewView
         self.squareMode = false
         super.init()
