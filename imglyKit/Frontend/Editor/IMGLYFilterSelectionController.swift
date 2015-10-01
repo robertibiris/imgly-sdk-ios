@@ -24,6 +24,7 @@ public class IMGLYFilterSelectionController: UICollectionViewController {
     private var selectedCellIndex: Int?
     public var selectedBlock: IMGLYFilterTypeSelectedBlock?
     public var activeFilterType: IMGLYFilterTypeActiveBlock?
+    public var tickImage: UIImage?
     
     // MARK: - Initializers
     
@@ -63,6 +64,8 @@ extension IMGLYFilterSelectionController {
             filterCell.imageView.clipsToBounds = true
             filterCell.imageView.contentMode = .ScaleToFill
             filterCell.imageView.image = nil
+            filterCell.tickImageView.image = tickImage ?? UIImage(named: "icon_tick", inBundle: NSBundle(forClass: self.dynamicType), compatibleWithTraitCollection:nil)
+            
             filterCell.hideTick()
 
             if let filterPreviewImage = FilterPreviews[filterType] {
