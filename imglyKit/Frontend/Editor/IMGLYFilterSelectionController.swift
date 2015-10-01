@@ -27,7 +27,7 @@ public class IMGLYFilterSelectionController: UICollectionViewController {
     
     // MARK: - Initializers
     
-    init() {
+    public init() {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.itemSize = FilterCollectionViewCellSize
         flowLayout.scrollDirection = .Horizontal
