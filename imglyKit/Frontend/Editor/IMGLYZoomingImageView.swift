@@ -8,9 +8,17 @@
 
 import UIKit
 
+public enum IMGLYZoomingImageViewFittingMode {
+    case Automatic
+    case Width
+    case Height
+}
+
 public class IMGLYZoomingImageView: UIScrollView {
     
     // MARK: - Properties
+    
+    public var fittingMode = IMGLYZoomingImageViewFittingMode.Automatic
     
     public var image: UIImage? {
         get {
@@ -26,7 +34,7 @@ public class IMGLYZoomingImageView: UIScrollView {
         }
     }
     
-    private let imageView = UIImageView()
+    public let imageView = UIImageView()
     private var initialZoomScaleWasSet = false
     public lazy var doubleTapGestureRecognizer: UITapGestureRecognizer = {
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: "doubleTapped:")
@@ -72,8 +80,28 @@ public class IMGLYZoomingImageView: UIScrollView {
         
         if imageView.image != nil {
             if !initialZoomScaleWasSet {
-                minimumZoomScale = min(frame.size.width / imageView.bounds.size.width, frame.size.height / imageView.bounds.size.height)
+                var contentOffset = CGPointZero
+                
+                switch (fittingMode) {
+                case .Automatic:
+                    minimumZoomScale = min(frame.size.width / imageView.bounds.size.width, frame.size.height / imageView.bounds.size.height)
+                case .Width:
+                    minimumZoomScale = frame.size.width / imageView.bounds.size.width
+                    let imageViewHeight = imageView.bounds.size.height * minimumZoomScale
+                    if imageViewHeight > frame.size.height {
+                        // Center vertically
+                        contentOffset = CGPoint(x: 0, y: (imageViewHeight - frame.size.height) / 2)
+                    }
+                case .Height:
+                    minimumZoomScale = frame.size.height / imageView.bounds.size.height
+                    let imageViewWidth = imageView.bounds.size.width * minimumZoomScale
+                    if imageViewWidth > frame.size.width {
+                        // Center horizontally
+                        contentOffset = CGPoint(x: (imageViewWidth - frame.size.width) / 2, y: 0)
+                    }
+                }
                 zoomScale = minimumZoomScale
+                self.contentOffset = contentOffset
                 initialZoomScaleWasSet = true
             }
         }
