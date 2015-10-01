@@ -162,7 +162,7 @@ public class IMGLYCameraViewController: UIViewController {
         slider.minimumTrackTintColor = UIColor.whiteColor()
         slider.maximumTrackTintColor = UIColor.whiteColor()
         slider.thumbTintColor = UIColor(red:1, green:0.8, blue:0, alpha:1)
-        let sliderThumbImage = UIImage(named: "slider_thumb_image", inBundle: bundle, compatibleWithTraitCollection: nil)
+        let sliderThumbImage = UIImage(named: "slider_thumb_image", inBundle: bundle, compatibleWithTraitCollection: nil)?.imageWithRenderingMode(.AlwaysTemplate)
         slider.setThumbImage(sliderThumbImage, forState: .Normal)
         slider.setThumbImage(sliderThumbImage, forState: .Highlighted)
         

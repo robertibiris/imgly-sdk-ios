@@ -26,7 +26,7 @@ public class IMGLYFilterEditorViewController: IMGLYSubEditorViewController {
         
         slider.minimumTrackTintColor = UIColor.whiteColor()
         slider.maximumTrackTintColor = UIColor.whiteColor()
-        let sliderThumbImage = UIImage(named: "slider_thumb_image", inBundle: bundle, compatibleWithTraitCollection: nil)
+        let sliderThumbImage = UIImage(named: "slider_thumb_image", inBundle: bundle, compatibleWithTraitCollection: nil)?.imageWithRenderingMode(.AlwaysTemplate)
         slider.setThumbImage(sliderThumbImage, forState: .Normal)
         slider.setThumbImage(sliderThumbImage, forState: .Highlighted)
         
