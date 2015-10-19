@@ -24,13 +24,25 @@ public class IMGLYFilterSelectionController: UICollectionViewController {
     private var selectedCellIndex: Int?
     public var selectedBlock: IMGLYFilterTypeSelectedBlock?
     public var activeFilterType: IMGLYFilterTypeActiveBlock?
-    public var tickImage: UIImage?
+    public var previewImage = UIImage(named: "nonePreview", inBundle: NSBundle(forClass: IMGLYFilterSelectionController.self), compatibleWithTraitCollection:nil)! {
+        didSet {
+            FilterPreviews = [IMGLYFilterType: UIImage]()
+            collectionView?.reloadData()
+        }
+    }
+    public var tickImage = UIImage(named: "icon_tick", inBundle: NSBundle(forClass: IMGLYFilterSelectionController.self), compatibleWithTraitCollection:nil)! {
+        didSet {
+            collectionView?.reloadData()
+        }
+    }
+    public var font: UIFont?
+    public var previewImageSize = CGSize(width: 56, height: 56)
     
     // MARK: - Initializers
     
     public init() {
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.itemSize = FilterCollectionViewCellSize
+        flowLayout.estimatedItemSize = FilterCollectionViewCellSize
         flowLayout.scrollDirection = .Horizontal
         flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
         flowLayout.minimumInteritemSpacing = 7
@@ -55,16 +67,20 @@ extension IMGLYFilterSelectionController {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(FilterCollectionViewCellReuseIdentifier, forIndexPath: indexPath) 
         
         if let filterCell = cell as? IMGLYFilterCollectionViewCell {
-            let bundle = NSBundle(forClass: self.dynamicType)
             let filterType = IMGLYInstanceFactory.availableFilterList[indexPath.item]
             let filter = IMGLYInstanceFactory.effectFilterWithType(filterType)
             
             filterCell.textLabel.text = filter.imgly_displayName
+            if let font = font {
+                filterCell.textLabel.font = font
+            }
+            filterCell.imageSize = previewImageSize
+            
             filterCell.imageView.layer.cornerRadius = 3
             filterCell.imageView.clipsToBounds = true
             filterCell.imageView.contentMode = .ScaleToFill
             filterCell.imageView.image = nil
-            filterCell.tickImageView.image = tickImage ?? UIImage(named: "icon_tick", inBundle: NSBundle(forClass: self.dynamicType), compatibleWithTraitCollection:nil)
+            filterCell.tickImageView.image = tickImage
             
             filterCell.hideTick()
 
@@ -76,7 +92,7 @@ extension IMGLYFilterSelectionController {
                 
                 // Create filterPreviewImage
                 dispatch_async(PhotoProcessorQueue) {
-                    let filterPreviewImage = IMGLYPhotoProcessor.processWithUIImage(UIImage(named: "nonePreview", inBundle: bundle, compatibleWithTraitCollection:nil)!, filters: [filter])
+                    let filterPreviewImage = IMGLYPhotoProcessor.processWithUIImage(self.previewImage, filters: [filter])
                     
                     dispatch_async(dispatch_get_main_queue()) {
                         FilterPreviews[filterType] = filterPreviewImage

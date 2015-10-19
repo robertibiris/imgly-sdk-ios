@@ -10,9 +10,15 @@ import UIKit
 
 class IMGLYButtonCollectionViewCell: IMGLYImageCaptionCollectionViewCell {
 
-    // MARK: - ImageCaptionCollectionViewCell
+    // MARK: - Initializers
     
-    override var imageSize: CGSize {
-        return CGSize(width: 44, height: 44)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        imageSize = CGSize(width: 44, height: 44)
     }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
 }

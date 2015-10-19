@@ -40,6 +40,8 @@ class IMGLYFilterCollectionViewCell: IMGLYImageCaptionCollectionViewCell {
     }
     
     private func commonInit() {
+        imageSize = CGSize(width: 56, height: 56)
+        imageCaptionMargin = 3
         configureViews()
     }
     
@@ -69,13 +71,4 @@ class IMGLYFilterCollectionViewCell: IMGLYImageCaptionCollectionViewCell {
         contentView.addConstraint(NSLayoutConstraint(item: activityIndicator, attribute: .CenterY, relatedBy: .Equal, toItem: imageView, attribute: .CenterY, multiplier: 1, constant: 0))
     }
     
-    // MARK: - ImageCaptionCollectionViewCell
-    
-    override var imageSize: CGSize {
-        return CGSize(width: 56, height: 56)
-    }
-    
-    override var imageCaptionMargin: CGFloat {
-        return 3
-    }
 }
