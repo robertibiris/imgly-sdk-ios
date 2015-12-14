@@ -25,6 +25,7 @@ public class IMGLYTextEditorViewController: IMGLYSubEditorViewController {
     private var fontSizeAtPinchBegin = CGFloat(0)
     private var distanceAtPinchBegin = CGFloat(0)
     private var beganTwoFingerPitch = false
+    private var draggedView: UILabel?
     
     public private(set) lazy var textColorSelectorView: IMGLYTextColorSelectorView = {
         let view = IMGLYTextColorSelectorView()
@@ -170,47 +171,101 @@ public class IMGLYTextEditorViewController: IMGLYSubEditorViewController {
     
     private func configureGestureRecognizers() {
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: "handlePan:")
-        textLabel.addGestureRecognizer(panGestureRecognizer)
+        panGestureRecognizer.minimumNumberOfTouches = 1
+        panGestureRecognizer.maximumNumberOfTouches = 1
+        textClipView.addGestureRecognizer(panGestureRecognizer)
 
+        let rotationGestureRecognizer = UIRotationGestureRecognizer(target: self, action: "handleRotate:")
+        rotationGestureRecognizer.delegate = self
+        textClipView.addGestureRecognizer(rotationGestureRecognizer)
+        
         let pinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: "handlePinch:")
-        view.addGestureRecognizer(pinchGestureRecognizer)
+        pinchGestureRecognizer.delegate = self
+        textClipView.addGestureRecognizer(pinchGestureRecognizer)
     }
     
     // MARK: - Gesture Handling
     
-    @objc private func handlePan(gestureRecognizer: UIPanGestureRecognizer) {
-        let location = gestureRecognizer.locationInView(textClipView)
+    @objc private func handlePan(recognizer: UIPanGestureRecognizer) {
+        let location = recognizer.locationInView(textClipView)
+        let translation = recognizer.translationInView(textClipView)
         
-        if gestureRecognizer.state == .Began {
-            panOffset = gestureRecognizer.locationInView(textLabel)
+        switch recognizer.state {
+        
+        case .Began:
+            draggedView = textClipView.hitTest(location, withEvent: nil) as? UILabel
+            if let draggedView = draggedView {
+                textClipView.bringSubviewToFront(draggedView)
+            }
+        case .Changed:
+            if let draggedView = draggedView {
+                draggedView.center = CGPoint(x: draggedView.center.x + translation.x, y: draggedView.center.y + translation.y)
+            }
+            recognizer.setTranslation(CGPointZero, inView: textClipView)
+        case .Cancelled, .Ended:
+            draggedView = nil
+        default:
+            break
         }
-        
-        var frame = textLabel.frame
-        frame.origin.x = location.x - panOffset.x
-        frame.origin.y = location.y - panOffset.y
-        textLabel.frame = frame
     }
     
-    @objc private func handlePinch(gestureRecognizer: UIPinchGestureRecognizer) {
-        if gestureRecognizer.state == .Began {
-            fontSizeAtPinchBegin = currentTextSize
-            beganTwoFingerPitch = false
-        }
-        
-        if gestureRecognizer.numberOfTouches() > 1 {
-            let point1 = gestureRecognizer.locationOfTouch(0, inView:view)
-            let point2 = gestureRecognizer.locationOfTouch(1, inView:view)
-            if  !beganTwoFingerPitch {
-                beganTwoFingerPitch = true
-                distanceAtPinchBegin = calculateNewFontSizeBasedOnDistanceBetweenPoint(point1, and: point2)
-            }
+    @objc private func handlePinch(recognizer: UIPinchGestureRecognizer) {
+        if recognizer.numberOfTouches() == 2 {
+            let point1 = recognizer.locationOfTouch(0, inView: textClipView)
+            let point2 = recognizer.locationOfTouch(1, inView: textClipView)
+            let midpoint = CGPoint(x:(point1.x + point2.x) / 2, y: (point1.y + point2.y) / 2)
+            let scale = recognizer.scale
             
-            let distance = calculateNewFontSizeBasedOnDistanceBetweenPoint(point1, and: point2)
-            currentTextSize = fontSizeAtPinchBegin - (distanceAtPinchBegin - distance) / 2.0
-            currentTextSize = max(MinimumFontSize, currentTextSize)
-            currentTextSize = min(maximumFontSize, currentTextSize)
-            textLabel.font = UIFont(name:fontName, size: currentTextSize)
-            updateTextLabelFrameForCurrentFont()
+            switch recognizer.state {
+            case .Began:
+                if draggedView == nil {
+                    draggedView = textClipView.hitTest(midpoint, withEvent: nil) as? UILabel
+                }
+                
+                if let draggedView = draggedView {
+                    textClipView.bringSubviewToFront(draggedView)
+                }
+            case .Changed:
+                if let draggedView = draggedView {
+                    draggedView.transform = CGAffineTransformScale(draggedView.transform, scale, scale)
+                }
+                
+                recognizer.scale = 1
+            case .Cancelled, .Ended:
+                draggedView = nil
+            default:
+                break
+            }
+        }
+    }
+    
+    @objc private func handleRotate(recognizer: UIRotationGestureRecognizer) {
+        if recognizer.numberOfTouches() == 2 {
+            let point1 = recognizer.locationOfTouch(0, inView: textClipView)
+            let point2 = recognizer.locationOfTouch(1, inView: textClipView)
+            let midpoint = CGPoint(x:(point1.x + point2.x) / 2, y: (point1.y + point2.y) / 2)
+            let rotation = recognizer.rotation
+            
+            switch recognizer.state {
+            case .Began:
+                if draggedView == nil {
+                    draggedView = textClipView.hitTest(midpoint, withEvent: nil) as? UILabel
+                }
+                
+                if let draggedView = draggedView {
+                    textClipView.bringSubviewToFront(draggedView)
+                }
+            case .Changed:
+                if let draggedView = draggedView {
+                    draggedView.transform = CGAffineTransformRotate(draggedView.transform, rotation)
+                }
+                
+                recognizer.rotation = 0
+            case .Cancelled, .Ended:
+                draggedView = nil
+            default:
+                break
+            }
         }
     }
     
@@ -342,5 +397,15 @@ extension IMGLYTextEditorViewController: IMGLYFontSelectorViewDelegate {
         self.fontName = fontName
         textField.font = UIFont(name: fontName, size: FontSizeInTextField)
         textField.becomeFirstResponder()
+    }
+}
+
+extension IMGLYTextEditorViewController: UIGestureRecognizerDelegate {
+    public func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if (gestureRecognizer is UIPinchGestureRecognizer && otherGestureRecognizer is UIRotationGestureRecognizer) || (gestureRecognizer is UIRotationGestureRecognizer && otherGestureRecognizer is UIPinchGestureRecognizer) {
+            return true
+        }
+        
+        return false
     }
 }

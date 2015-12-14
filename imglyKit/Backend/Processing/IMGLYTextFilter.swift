@@ -73,7 +73,18 @@ public class IMGLYTextFilter : CIFilter {
         UIRectFill(CGRect(origin: CGPoint(), size: imageSize))
         
         let font = UIFont(name: fontName, size: fontScaleFactor * imageSize.height)
-        text.drawInRect(CGRect(x: frame.origin.x * imageSize.width, y: frame.origin.y * imageSize.height, width: frame.size.width * imageSize.width, height: frame.size.height * imageSize.width), withAttributes: [NSFontAttributeName: font!, NSForegroundColorAttributeName: color])
+        if let context = UIGraphicsGetCurrentContext() {
+            CGContextSaveGState(context)
+            // Move center to origin
+            //CGContextTranslateCTM(context, imageRect.origin.x, imageRect.origin.y)
+            // Apply the transform
+            //CGContextConcatCTM(context, self.transform)
+            CGContextRotateCTM(context, 0.2)
+            // Move the origin back by half
+            //CGContextTranslateCTM(context, imageRect.size.width * -0.5, imageRect.size.height * -0.5)
+            text.drawInRect(CGRect(x: frame.origin.x * imageSize.width, y: frame.origin.y * imageSize.height, width: frame.size.width * imageSize.width, height: frame.size.height * imageSize.width), withAttributes: [NSFontAttributeName: font!, NSForegroundColorAttributeName: color])
+            CGContextRestoreGState(context)
+        }
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
