@@ -10,8 +10,8 @@ import Foundation
 
 public class IMGLYGoblinFilter: IMGLYResponseFilter {
     init() {
-        super.init(responseName: "Goblin")
-        self.imgly_displayName = "Goblin"
+        super.init(responseName: "Gobblin")
+        self.imgly_displayName = "Gobblin"
     }
     
     required public init?(coder aDecoder: NSCoder) {

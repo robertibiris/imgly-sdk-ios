@@ -26,6 +26,11 @@ public class IMGLYTextFilter : CIFilter {
     public var fontScaleFactor = CGFloat(1)
     /// The relative frame of the text within the image.
     public var frame = CGRect()
+    /// The transform to apply to the text
+    public var transform = CGAffineTransformIdentity
+    /// The crop-create applied to the input image, so we can adjust the sticker position
+    public var cropRect = CGRectMake(0.0, 0.0, 1.0, 1.0)
+
     /// The color of the text.
     #if os(iOS)
     public var color = UIColor.whiteColor()
@@ -68,6 +73,12 @@ public class IMGLYTextFilter : CIFilter {
     private func createTextImage() -> UIImage {
         let rect = inputImage!.extent
         let imageSize = rect.size
+        let originalSize = CGSize(width: round(imageSize.width / cropRect.width), height: round(imageSize.height / cropRect.height))
+        var position = CGPoint(x: CGRectGetMidX(frame) * imageSize.width, y: CGRectGetMidY(frame) * imageSize.height)
+        position.x -= (cropRect.origin.x * originalSize.width)
+        position.y -= (cropRect.origin.y * originalSize.height)
+        let imageRect = CGRect(origin: position, size: imageSize)
+        
         UIGraphicsBeginImageContext(imageSize)
         UIColor(white: 1.0, alpha: 0.0).setFill()
         UIRectFill(CGRect(origin: CGPoint(), size: imageSize))
@@ -76,13 +87,12 @@ public class IMGLYTextFilter : CIFilter {
         if let context = UIGraphicsGetCurrentContext() {
             CGContextSaveGState(context)
             // Move center to origin
-            //CGContextTranslateCTM(context, imageRect.origin.x, imageRect.origin.y)
+            CGContextTranslateCTM(context, imageRect.origin.x, imageRect.origin.y)
             // Apply the transform
-            //CGContextConcatCTM(context, self.transform)
-            CGContextRotateCTM(context, 0.2)
+            CGContextConcatCTM(context, self.transform)
             // Move the origin back by half
-            //CGContextTranslateCTM(context, imageRect.size.width * -0.5, imageRect.size.height * -0.5)
-            text.drawInRect(CGRect(x: frame.origin.x * imageSize.width, y: frame.origin.y * imageSize.height, width: frame.size.width * imageSize.width, height: frame.size.height * imageSize.width), withAttributes: [NSFontAttributeName: font!, NSForegroundColorAttributeName: color])
+            CGContextTranslateCTM(context, imageRect.size.width * -0.5, imageRect.size.height * -0.5)
+            text.drawInRect(CGRect(origin: CGPoint(), size: rect.size), withAttributes: [NSFontAttributeName: font!, NSForegroundColorAttributeName: color])
             CGContextRestoreGState(context)
         }
         let image = UIGraphicsGetImageFromCurrentImageContext()
@@ -121,6 +131,8 @@ extension IMGLYTextFilter {
         copy.fontName = (fontName as NSString).copyWithZone(zone) as! String
         copy.fontScaleFactor = fontScaleFactor
         copy.frame = frame
+        copy.cropRect = cropRect
+
         #if os(iOS)
         copy.color = color.copyWithZone(zone) as! UIColor
         #elseif os(OSX)

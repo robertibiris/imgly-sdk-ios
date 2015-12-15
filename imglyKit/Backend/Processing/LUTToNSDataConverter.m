@@ -29,9 +29,7 @@ static NSData *identityLUT;
     
     @autoreleasepool {
         NSData *lut = [self colorCubeDataFromLUT:name];
-        if (!lut) {
-            return nil;
-        }
+        NSAssert(lut != nil, @"can't load LUT with name %@", name);
         
         NSData *identity;
         if (!shouldCache) {

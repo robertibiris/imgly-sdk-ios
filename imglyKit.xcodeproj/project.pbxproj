@@ -834,7 +834,6 @@
 		2BF4D3A51AF1140900C801B2 /* Processing */ = {
 			isa = PBXGroup;
 			children = (
-				2BF4D49F1AF1154B00C801B2 /* IMGLYContrastBrightnessSaturationFilter.swift */,
 				2BF4D4A01AF1154B00C801B2 /* IMGLYCropFilter.swift */,
 				2BF4D4A11AF1154B00C801B2 /* IMGLYEnhancementFilter.swift */,
 				2BF4D4A31AF1154B00C801B2 /* IMGLYNoneFilter.swift */,
@@ -843,6 +842,7 @@
 				2BB88C3D1B69127400D23A2F /* IMGLYScaleFilter.swift */,
 				2BF4D4A61AF1154B00C801B2 /* IMGLYStickerFilter.swift */,
 				2BF4D4A71AF1154B00C801B2 /* IMGLYTextFilter.swift */,
+				2BF4D49F1AF1154B00C801B2 /* IMGLYContrastBrightnessSaturationFilter.swift */,
 				2BF4D4A81AF1154B00C801B2 /* IMGLYTiltshiftFilter.swift */,
 				2BF4D53B1AF1156F00C801B2 /* LUTToNSDataConverter.h */,
 				2BF4D53C1AF1156F00C801B2 /* LUTToNSDataConverter.m */,

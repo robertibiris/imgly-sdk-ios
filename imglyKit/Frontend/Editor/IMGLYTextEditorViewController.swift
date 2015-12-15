@@ -116,8 +116,9 @@ public class IMGLYTextEditorViewController: IMGLYSubEditorViewController {
         fixedFilterStack.textFilter.color = textColor
         fixedFilterStack.textFilter.fontName = fontName
         fixedFilterStack.textFilter.frame = transformedTextFrame()
+        print( fixedFilterStack.textFilter.frame)
         fixedFilterStack.textFilter.fontScaleFactor = currentTextSize / previewImageView.visibleImageFrame.size.height
-        
+        fixedFilterStack.textFilter.transform = textLabel.transform
         updatePreviewImageWithCompletion {
             super.tappedDone(sender)
         }
@@ -350,15 +351,20 @@ public class IMGLYTextEditorViewController: IMGLYSubEditorViewController {
     }
     
     private func transformedTextFrame() -> CGRect {
-        var origin = textLabel.frame.origin
-        origin.x = origin.x / previewImageView.visibleImageFrame.size.width
-        origin.y = origin.y / previewImageView.visibleImageFrame.size.height
-        
+        let cropRect = fixedFilterStack.textFilter.cropRect
+        let completeSize = textClipView.bounds.size
+        var position = CGPoint(x: textLabel.frame.origin.x / completeSize.width,
+        y: textLabel.frame.origin.y / completeSize.height)
+        position.x *= cropRect.width
+        position.y *= cropRect.height
+        position.x += cropRect.origin.x
+        position.y += cropRect.origin.y
+ 
         var size = textLabel.frame.size
         size.width = size.width / textLabel.frame.size.width
         size.height = size.height / textLabel.frame.size.height
         
-        return CGRect(origin: origin, size: size)
+        return CGRect(origin: position, size: size)
     }
 }
 
