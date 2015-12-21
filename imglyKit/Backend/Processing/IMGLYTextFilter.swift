@@ -32,27 +32,27 @@ public class IMGLYTextFilter : CIFilter {
     #elseif os(OSX)
     public var color = NSColor.whiteColor()
     #endif
-    
+
     override init() {
         super.init()
     }
-    
+
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
+
     /// Returns a CIImage object that encapsulates the operations configured in the filter. (read-only)
     public override var outputImage: CIImage? {
         guard let inputImage = inputImage else {
             return nil
         }
-        
+
         if text.isEmpty {
             return inputImage
         }
-        
+
         let textImage = createTextImage()
-        
+
         if let cgImage = textImage.CGImage, filter = CIFilter(name: "CISourceOverCompositing") {
             let textCIImage = CIImage(CGImage: cgImage)
             filter.setValue(inputImage, forKey: kCIInputBackgroundImageKey)
@@ -62,40 +62,40 @@ public class IMGLYTextFilter : CIFilter {
             return inputImage
         }
     }
-    
+
     #if os(iOS)
-    
+
     private func createTextImage() -> UIImage {
         let rect = inputImage!.extent
         let imageSize = rect.size
         UIGraphicsBeginImageContext(imageSize)
         UIColor(white: 1.0, alpha: 0.0).setFill()
         UIRectFill(CGRect(origin: CGPoint(), size: imageSize))
-        
+
         let font = UIFont(name: fontName, size: fontScaleFactor * imageSize.height)
         text.drawInRect(CGRect(x: frame.origin.x * imageSize.width, y: frame.origin.y * imageSize.height, width: frame.size.width * imageSize.width, height: frame.size.height * imageSize.width), withAttributes: [NSFontAttributeName: font!, NSForegroundColorAttributeName: color])
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        
+
         return image
     }
-    
+
     #elseif os(OSX)
-    
+
     private func createTextImage() -> NSImage {
         let rect = inputImage!.extent
         let imageSize = rect.size
-    
+
         let image = NSImage(size: imageSize)
         image.lockFocus()
-    
+
         NSColor(white: 1, alpha: 0).setFill()
         NSRectFill(CGRect(origin: CGPoint(), size: imageSize))
         let font = NSFont(name: fontName, size: fontScaleFactor * imageSize.height)
         text.drawInRect(CGRect(x: frame.origin.x * imageSize.width, y: frame.origin.y * imageSize.height, width: frame.size.width * imageSize.width, height: frame.size.height * imageSize.width), withAttributes: [NSFontAttributeName: font!, NSForegroundColorAttributeName: color])
-    
+
         image.unlockFocus()
-        
+
         return image
     }
 
@@ -115,7 +115,7 @@ extension IMGLYTextFilter {
         #elseif os(OSX)
         copy.color = color.copyWithZone(zone) as! NSColor
         #endif
-        
+
         return copy
     }
 }

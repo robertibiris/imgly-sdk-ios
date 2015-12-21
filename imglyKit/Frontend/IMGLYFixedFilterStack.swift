@@ -16,36 +16,36 @@ import CoreImage
 *   care about creating the single filters.
 */
 public class IMGLYFixedFilterStack: NSObject {
-    
+
     // MARK: - Properties
-    
+
     public var enhancementFilter: IMGLYEnhancementFilter = {
         let filter = IMGLYInstanceFactory.enhancementFilter()
         filter.enabled = false
         filter.storeEnhancedImage = true
         return filter
         }()
-    
+
     public var orientationCropFilter = IMGLYInstanceFactory.orientationCropFilter()
     public var effectFilter = IMGLYInstanceFactory.effectFilterWithType(IMGLYFilterType.None)
     public var brightnessFilter = IMGLYInstanceFactory.colorAdjustmentFilter()
     public var tiltShiftFilter = IMGLYInstanceFactory.tiltShiftFilter()
     public var textFilter = IMGLYInstanceFactory.textFilter()
     public var stickerFilters = [CIFilter]()
-    
+
     public var activeFilters: [CIFilter] {
         setCropRectForStickerFilters()
         var activeFilters: [CIFilter] = [enhancementFilter, orientationCropFilter, tiltShiftFilter, effectFilter, brightnessFilter, textFilter]
         activeFilters += stickerFilters
         return activeFilters
     }
-    
+
     private func setCropRectForStickerFilters () {
         for stickerFilter in stickerFilters {
             (stickerFilter as! IMGLYStickerFilter).cropRect = orientationCropFilter.cropRect
         }
     }
-    
+
     public func rotateStickersRight () {
         rotateStickers(CGFloat(M_PI_2), negateX: true, negateY: false)
     }
@@ -53,7 +53,7 @@ public class IMGLYFixedFilterStack: NSObject {
     public func rotateStickersLeft () {
         rotateStickers(CGFloat(-M_PI_2), negateX: false, negateY: true)
     }
-    
+
     private func rotateStickers (angle:CGFloat, negateX:Bool ,negateY:Bool) {
         let xFactor:CGFloat = negateX ? -1.0 : 1.0
         let yFactor:CGFloat = negateY ? -1.0 : 1.0
@@ -78,7 +78,7 @@ public class IMGLYFixedFilterStack: NSObject {
     public func flipStickersVertical () {
         flipStickers(false)
     }
-    
+
     private func flipStickers(horizontal:Bool) {
         for filter in self.activeFilters {
             if let stickerFilter = filter as? IMGLYStickerFilter {
@@ -105,7 +105,7 @@ public class IMGLYFixedFilterStack: NSObject {
     private func flipRotationHorizontal (stickerFilter:IMGLYStickerFilter) {
         flipRotation(stickerFilter, axisAngle: CGFloat(M_PI))
     }
-    
+
     private func flipRotationVertical (stickerFilter:IMGLYStickerFilter) {
         flipRotation(stickerFilter, axisAngle: CGFloat(M_PI_2))
     }
@@ -128,7 +128,7 @@ public class IMGLYFixedFilterStack: NSObject {
     required override public init () {
         super.init()
     }
-    
+
 }
 
 extension IMGLYFixedFilterStack: NSCopying {

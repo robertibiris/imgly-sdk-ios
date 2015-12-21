@@ -34,15 +34,15 @@ provided by the imglyKit. It uses the builder pattern to create an
 immutable copy via a closure.
 */
 @objc public class IMGLYConfiguration : NSObject {
-    
+
     // MARK: Properties
-    
+
     /// Defaults to black.
     public let backgroundColor: UIColor
-    
+
     /// Camera View Controller
     public let cameraViewControllerOptions: IMGLYCameraViewControllerOptions
-    
+
     // Editor View Controller options
     public let mainEditorViewControllerOptions: IMGLYMainEditorViewControllerOptions
     public let filterEditorViewControllerOptions: IMGLYFilterEditorViewControllerOptions
@@ -54,13 +54,13 @@ immutable copy via a closure.
     public let contrastEditorViewControllerOptions: IMGLYSliderEditorViewControllerOptions
     public let saturationEditorViewControllerOptions: IMGLYSliderEditorViewControllerOptions
     public let textEditorViewControllerOptions: IMGLYTextEditorViewControllerOptions
-    
+
     //  MARK: Initialization
-    
+
     override convenience init() {
         self.init(builder: { _ in })
     }
-    
+
     public init(builder: (IMGLYConfigurationBuilder -> Void)) {
         let builderForClosure = IMGLYConfigurationBuilder()
         builder(builderForClosure)
@@ -79,7 +79,7 @@ immutable copy via a closure.
         self.classReplacingMap = builderForClosure.classReplacingMap
         super.init()
     }
-    
+
     /// Used internally to fetch a replacement class for framework classes.
     func getClassForReplacedClass(replacedClass: NSObject.Type) -> NSObject.Type {
         guard let replacingClassName = classReplacingMap[String(replacedClass)]
@@ -108,29 +108,29 @@ immutable copy via a closure.
     public var contrastEditorViewControllerOptions: IMGLYSliderEditorViewControllerOptions = IMGLYSliderEditorViewControllerOptions()
     public var saturationEditorViewControllerOptions: IMGLYSliderEditorViewControllerOptions = IMGLYSliderEditorViewControllerOptions()
     public var textEditorViewControllerOptions: IMGLYTextEditorViewControllerOptions = IMGLYTextEditorViewControllerOptions()
-    
+
     // MARK: Class replacement
-    
+
     /**
      Use this to use a specific subclass instead of the default imglyKit classes. This works
      across all the whole framework and allows you to subclass all usages of a class.
-     
+
      - Throws: An exception if the replacing class is not a subclass of the replaced class.
      */
     public func replaceClass(builtinClass: NSObject.Type, replacingClass: NSObject.Type, namespace: String) throws {
-        
+
         if (!replacingClass.isSubclassOfClass(builtinClass)) {
             throw IMGLYConfigurationError.ReplacingClassNotASubclass
         }
-        
+
         let builtinClassName = String(builtinClass)
         let replacingClassName = "\(namespace).\(String(replacingClass))"
-        
+
         classReplacingMap[builtinClassName] = replacingClassName
         print("Using \(replacingClassName) instead of \(builtinClassName)")
     }
-    
+
     // MARK: Private properties
-    
+
     var classReplacingMap: [String: String] = [:]
 }

@@ -11,13 +11,13 @@ import CoreGraphics
 
 extension IMGLYInstanceFactory {
     // MARK: - Editor View Controllers
-    
+
     /**
     Return the viewcontroller according to the button-type.
     This is used by the main menu.
-    
+
     - parameter type: The type of the button pressed.
-    
+
     - returns: A viewcontroller according to the button-type.
     */
     public class func viewControllerForEditorActionType(actionType: IMGLYMainEditorActionType, withFixedFilterStack fixedFilterStack: IMGLYFixedFilterStack, configuration: IMGLYConfiguration) -> IMGLYSubEditorViewController? {
@@ -44,55 +44,55 @@ extension IMGLYInstanceFactory {
             return nil
         }
     }
-    
+
     public class func filterEditorViewControllerWithFixedFilterStack(fixedFilterStack: IMGLYFixedFilterStack, configuration: IMGLYConfiguration) -> IMGLYFilterEditorViewController {
         return IMGLYFilterEditorViewController(fixedFilterStack: fixedFilterStack, configuration: configuration)
     }
-    
+
     public class func stickersEditorViewControllerWithFixedFilterStack(fixedFilterStack: IMGLYFixedFilterStack, configuration: IMGLYConfiguration) -> IMGLYStickersEditorViewController {
         return IMGLYStickersEditorViewController(fixedFilterStack: fixedFilterStack, configuration: configuration)
     }
-    
+
     public class func orientationEditorViewControllerWithFixedFilterStack(fixedFilterStack: IMGLYFixedFilterStack, configuration: IMGLYConfiguration) -> IMGLYOrientationEditorViewController {
         return IMGLYOrientationEditorViewController(fixedFilterStack: fixedFilterStack, configuration: configuration)
     }
-    
+
     public class func focusEditorViewControllerWithFixedFilterStack(fixedFilterStack: IMGLYFixedFilterStack, configuration: IMGLYConfiguration) -> IMGLYFocusEditorViewController {
         return IMGLYFocusEditorViewController(fixedFilterStack: fixedFilterStack, configuration: configuration)
     }
-    
+
     public class func cropEditorViewControllerWithFixedFilterStack(fixedFilterStack: IMGLYFixedFilterStack, configuration: IMGLYConfiguration) -> IMGLYCropEditorViewController {
         return IMGLYCropEditorViewController(fixedFilterStack: fixedFilterStack, configuration: configuration)
     }
-    
+
     public class func brightnessEditorViewControllerWithFixedFilterStack(fixedFilterStack: IMGLYFixedFilterStack, configuration: IMGLYConfiguration) -> IMGLYBrightnessEditorViewController {
         return IMGLYBrightnessEditorViewController(fixedFilterStack: fixedFilterStack, configuration: configuration)
     }
-    
+
     public class func contrastEditorViewControllerWithFixedFilterStack(fixedFilterStack: IMGLYFixedFilterStack, configuration: IMGLYConfiguration) -> IMGLYContrastEditorViewController {
         return IMGLYContrastEditorViewController(fixedFilterStack: fixedFilterStack, configuration: configuration)
     }
-    
+
     public class func saturationEditorViewControllerWithFixedFilterStack(fixedFilterStack: IMGLYFixedFilterStack, configuration: IMGLYConfiguration) -> IMGLYSaturationEditorViewController {
         return IMGLYSaturationEditorViewController(fixedFilterStack: fixedFilterStack, configuration: configuration)
     }
-    
+
     public class func textEditorViewControllerWithFixedFilterStack(fixedFilterStack: IMGLYFixedFilterStack, configuration: IMGLYConfiguration) -> IMGLYTextEditorViewController {
         return IMGLYTextEditorViewController(fixedFilterStack: fixedFilterStack, configuration: configuration)
     }
-    
+
     // MARK: - Gradient Views
-    
+
     public class func circleGradientView() -> IMGLYCircleGradientView {
         return IMGLYCircleGradientView(frame: CGRectZero)
     }
-    
+
     public class func boxGradientView() -> IMGLYBoxGradientView {
         return IMGLYBoxGradientView(frame: CGRectZero)
     }
-    
+
     // MARK: - Helpers
-    
+
     public class func cropRectComponent() -> IMGLYCropRectComponent {
         return IMGLYCropRectComponent()
     }

@@ -13,7 +13,7 @@ class IMGLYMainEditorSubclassViewController: IMGLYMainEditorViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         print("SUBCLASS!")
     }
 }
