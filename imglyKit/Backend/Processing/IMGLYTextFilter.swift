@@ -14,9 +14,9 @@ import QuartzCore
 import AppKit
 #endif
 
-public class IMGLYTextFilter : CIFilter {
+public class IMGLYTextFilter: CIFilter {
     /// A CIImage object that serves as input for the filter.
-    public var inputImage:CIImage?
+    public var inputImage: CIImage?
     /// The text that should be rendered.
     public var text = ""
     /// The name of the used font.

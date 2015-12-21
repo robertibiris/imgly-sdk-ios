@@ -33,7 +33,7 @@ An IMGLYConfiguration defines behaviour and look of all view controllers
 provided by the imglyKit. It uses the builder pattern to create an
 immutable copy via a closure.
 */
-@objc public class IMGLYConfiguration : NSObject {
+@objc public class IMGLYConfiguration: NSObject {
 
     // MARK: Properties
 
@@ -82,8 +82,9 @@ immutable copy via a closure.
 
     /// Used internally to fetch a replacement class for framework classes.
     func getClassForReplacedClass(replacedClass: NSObject.Type) -> NSObject.Type {
-        guard let replacingClassName = classReplacingMap[String(replacedClass)]
-            else { return replacedClass }
+        guard let replacingClassName = classReplacingMap[String(replacedClass)] else {
+            return replacedClass
+        }
 
         return NSClassFromString(replacingClassName) as! NSObject.Type
     }
@@ -95,7 +96,7 @@ immutable copy via a closure.
  The configuration builder object offers all properties of `IMGLYConfiguration` in
  a mutable version, in order to build an immutable `IMGLYConfiguration` object.
 */
-@objc public class IMGLYConfigurationBuilder : NSObject {
+@objc public class IMGLYConfigurationBuilder: NSObject {
     public var backgroundColor: UIColor = UIColor.blackColor()
     public var cameraViewControllerOptions: IMGLYCameraViewControllerOptions = IMGLYCameraViewControllerOptions()
     public var mainEditorViewControllerOptions: IMGLYMainEditorViewControllerOptions = IMGLYMainEditorViewControllerOptions()
@@ -118,8 +119,7 @@ immutable copy via a closure.
      - Throws: An exception if the replacing class is not a subclass of the replaced class.
      */
     public func replaceClass(builtinClass: NSObject.Type, replacingClass: NSObject.Type, namespace: String) throws {
-
-        if (!replacingClass.isSubclassOfClass(builtinClass)) {
+        if !replacingClass.isSubclassOfClass(builtinClass) {
             throw IMGLYConfigurationError.ReplacingClassNotASubclass
         }
 

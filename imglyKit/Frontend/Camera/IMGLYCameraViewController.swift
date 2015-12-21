@@ -692,7 +692,7 @@ public class IMGLYCameraViewController: UIViewController {
             if currentRecordingMode == .Photo {
                 flashButton.hidden = !cameraController.flashAvailable
 
-                switch(cameraController.flashMode) {
+                switch cameraController.flashMode {
                 case .Auto:
                     self.flashButton.setImage(UIImage(named: "flash_auto", inBundle: bundle, compatibleWithTraitCollection: nil), forState: UIControlState.Normal)
                 case .On:
@@ -703,7 +703,7 @@ public class IMGLYCameraViewController: UIViewController {
             } else if currentRecordingMode == .Video {
                 flashButton.hidden = !cameraController.torchAvailable
 
-                switch(cameraController.torchMode) {
+                switch cameraController.torchMode {
                 case .Auto:
                     self.flashButton.setImage(UIImage(named: "flash_auto", inBundle: bundle, compatibleWithTraitCollection: nil), forState: UIControlState.Normal)
                 case .On:
@@ -816,7 +816,7 @@ public class IMGLYCameraViewController: UIViewController {
     }
 
     public func changeFlash(sender: UIButton?) {
-        switch(currentRecordingMode) {
+        switch currentRecordingMode {
         case .Photo:
             cameraController?.selectNextFlashMode()
         case .Video:
@@ -915,7 +915,7 @@ public class IMGLYCameraViewController: UIViewController {
         dismissViewControllerAnimated(true, completion: nil)
     }
 
-    @objc private func image(image: UIImage, didFinishSavingWithError: NSError, contextInfo:UnsafePointer<Void>) {
+    @objc private func image(image: UIImage, didFinishSavingWithError: NSError, contextInfo: UnsafePointer<Void>) {
         setLastImageFromRollAsPreview()
     }
 
