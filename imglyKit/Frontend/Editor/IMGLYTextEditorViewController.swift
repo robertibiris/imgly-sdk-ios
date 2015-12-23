@@ -8,10 +8,10 @@
 
 import UIKit
 
-private let FontSizeInTextField = CGFloat(20)
-private let TextFieldHeight = CGFloat(40)
-private let TextLabelInitialMargin = CGFloat(40)
-private let MinimumFontSize = CGFloat(12.0)
+private let kFontSizeInTextField = CGFloat(20)
+private let kTextFieldHeight = CGFloat(40)
+private let kTextLabelInitialMargin = CGFloat(40)
+private let kMinimumFontSize = CGFloat(12.0)
 
 @objc public class IMGLYTextEditorViewControllerOptions: IMGLYEditorViewControllerOptions {
 
@@ -59,13 +59,13 @@ public class IMGLYTextEditorViewController: IMGLYSubEditorViewController {
         view.backgroundColor = self.currentBackgroundColor
         view.menuDelegate = self
         return view
-        }()
+    }()
 
     public private(set) lazy var textClipView: UIView = {
         let view = UIView()
         view.clipsToBounds = true
         return view
-        }()
+    }()
 
     public private(set) lazy var textField: UITextField = {
         let textField = UITextField()
@@ -78,7 +78,7 @@ public class IMGLYTextEditorViewController: IMGLYSubEditorViewController {
         textField.returnKeyType = UIReturnKeyType.Done
         self.options.textFieldConfigurationClosure(textField)
         return textField
-        }()
+    }()
 
     public private(set) lazy var textLabel: UILabel = {
         let label = UILabel()
@@ -89,14 +89,14 @@ public class IMGLYTextEditorViewController: IMGLYSubEditorViewController {
         label.clipsToBounds = true
         label.userInteractionEnabled = true
         return label
-        }()
+    }()
 
     public private(set) lazy var fontSelectorContainerView: UIVisualEffectView = {
         let blurEffect = UIBlurEffect(style: .Dark)
         let view = UIVisualEffectView(effect: blurEffect)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
-        }()
+    }()
 
     public private(set) lazy var fontSelectorView: IMGLYFontSelectorView = {
         let selector = IMGLYFontSelectorView()
@@ -178,7 +178,7 @@ public class IMGLYTextEditorViewController: IMGLYSubEditorViewController {
 
     private func configureTextField() {
         view.addSubview(textField)
-        textField.frame = CGRect(x: 0, y: view.bounds.size.height, width: view.bounds.size.width, height: TextFieldHeight)
+        textField.frame = CGRect(x: 0, y: view.bounds.size.height, width: view.bounds.size.width, height: kTextFieldHeight)
     }
 
     private func configureTextLabel() {
@@ -246,7 +246,7 @@ public class IMGLYTextEditorViewController: IMGLYSubEditorViewController {
 
             let distance = calculateNewFontSizeBasedOnDistanceBetweenPoint(point1, and: point2)
             currentTextSize = fontSizeAtPinchBegin - (distanceAtPinchBegin - distance) / 2.0
-            currentTextSize = max(MinimumFontSize, currentTextSize)
+            currentTextSize = max(kMinimumFontSize, currentTextSize)
             currentTextSize = min(maximumFontSize, currentTextSize)
             textLabel.font = UIFont(name:fontName, size: currentTextSize)
             updateTextLabelFrameForCurrentFont()
@@ -258,7 +258,7 @@ public class IMGLYTextEditorViewController: IMGLYSubEditorViewController {
     @objc private func keyboardWillChangeFrame(notification: NSNotification) {
         if let frameValue = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue {
             let keyboardFrame = view.convertRect(frameValue.CGRectValue(), fromView: nil)
-            textField.frame = CGRect(x: 0, y: view.frame.size.height - keyboardFrame.size.height - TextFieldHeight, width: view.frame.size.width, height: TextFieldHeight)
+            textField.frame = CGRect(x: 0, y: view.frame.size.height - keyboardFrame.size.height - kTextFieldHeight, width: view.frame.size.width, height: kTextFieldHeight)
         }
     }
 
@@ -284,9 +284,10 @@ public class IMGLYTextEditorViewController: IMGLYSubEditorViewController {
             if !text.isEmpty {
                 repeat {
                     currentTextSize += 1.0
-                    let font = UIFont(name: fontName, size: currentTextSize)
-                    size = text.sizeWithAttributes([ NSFontAttributeName: font as! AnyObject ])
-                } while (size.width < (view.frame.size.width - TextLabelInitialMargin))
+                    if let font = UIFont(name: fontName, size: currentTextSize) {
+                        size = text.sizeWithAttributes([ NSFontAttributeName: font ])
+                    }
+                } while (size.width < (view.frame.size.width - kTextLabelInitialMargin))
             }
         }
     }
@@ -299,8 +300,9 @@ public class IMGLYTextEditorViewController: IMGLYSubEditorViewController {
                 maximumFontSize = currentTextSize
                 repeat {
                     maximumFontSize += 1.0
-                    let font = UIFont(name: fontName, size: maximumFontSize)
-                    size = text.sizeWithAttributes([ NSFontAttributeName: font as! AnyObject ])
+                    if let font = UIFont(name: fontName, size: maximumFontSize) {
+                        size = text.sizeWithAttributes([ NSFontAttributeName: font ])
+                    }
                 } while (size.width < self.view.frame.size.width)
             }
         }
@@ -312,7 +314,7 @@ public class IMGLYTextEditorViewController: IMGLYSubEditorViewController {
 
         textLabel.font = UIFont(name: fontName, size: currentTextSize)
         textLabel.sizeToFit()
-        textLabel.frame.origin.x = TextLabelInitialMargin / 2.0 - textClipView.frame.origin.x
+        textLabel.frame.origin.x = kTextLabelInitialMargin / 2.0 - textClipView.frame.origin.x
         textLabel.frame.origin.y = -textLabel.frame.size.height / 2.0 + textClipView.frame.height / 2.0
     }
 
@@ -379,7 +381,7 @@ extension IMGLYTextEditorViewController: IMGLYFontSelectorViewDelegate {
     public func fontSelectorView(fontSelectorView: IMGLYFontSelectorView, didSelectFontWithName fontName: String) {
         fontSelectorContainerView.removeFromSuperview()
         self.fontName = fontName
-        textField.font = UIFont(name: fontName, size: FontSizeInTextField)
+        textField.font = UIFont(name: fontName, size: kFontSizeInTextField)
         textField.becomeFirstResponder()
     }
 }

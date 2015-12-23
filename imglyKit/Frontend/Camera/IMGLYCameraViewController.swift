@@ -11,9 +11,9 @@ import AVFoundation
 import MobileCoreServices
 import Photos
 
-private let ShowFilterIntensitySliderInterval = NSTimeInterval(2)
-private let FilterSelectionViewHeight = 100
-private let BottomControlSize = CGSize(width: 47, height: 47)
+private let kShowFilterIntensitySliderInterval = NSTimeInterval(2)
+private let kFilterSelectionViewHeight = 100
+private let kBottomControlSize = CGSize(width: 47, height: 47)
 public typealias IMGLYCameraCompletionBlock = (UIImage?, NSURL?) -> (Void)
 
 @objc public class IMGLYCameraViewControllerOptions: NSObject {
@@ -498,7 +498,7 @@ public class IMGLYCameraViewController: UIViewController {
 
         let metrics: [String : AnyObject] = [
             "topControlsViewHeight" : 44,
-            "filterSelectionViewHeight" : FilterSelectionViewHeight,
+            "filterSelectionViewHeight" : kFilterSelectionViewHeight,
             "topControlMargin" : 20,
             "topControlMinWidth" : 44,
             "filterIntensitySliderLeftRightMargin" : 10
@@ -557,8 +557,8 @@ public class IMGLYCameraViewController: UIViewController {
         }
 
         // CameraRollButton
-        cameraRollButton.addConstraint(NSLayoutConstraint(item: cameraRollButton, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: BottomControlSize.width))
-        cameraRollButton.addConstraint(NSLayoutConstraint(item: cameraRollButton, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: BottomControlSize.height))
+        cameraRollButton.addConstraint(NSLayoutConstraint(item: cameraRollButton, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: kBottomControlSize.width))
+        cameraRollButton.addConstraint(NSLayoutConstraint(item: cameraRollButton, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: kBottomControlSize.height))
         bottomControlsView.addConstraint(NSLayoutConstraint(item: cameraRollButton, attribute: .CenterY, relatedBy: .Equal, toItem: actionButtonContainer, attribute: .CenterY, multiplier: 1, constant: 0))
         bottomControlsView.addConstraint(NSLayoutConstraint(item: cameraRollButton, attribute: .Left, relatedBy: .Equal, toItem: bottomControlsView, attribute: .Left, multiplier: 1, constant: 20))
 
@@ -569,8 +569,8 @@ public class IMGLYCameraViewController: UIViewController {
         bottomControlsView.addConstraint(NSLayoutConstraint(item: bottomControlsView, attribute: .Bottom, relatedBy: .Equal, toItem: actionButtonContainer, attribute: .Bottom, multiplier: 1, constant: 10))
 
         // FilterSelectionButton
-        filterSelectionButton.addConstraint(NSLayoutConstraint(item: filterSelectionButton, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: BottomControlSize.width))
-        filterSelectionButton.addConstraint(NSLayoutConstraint(item: filterSelectionButton, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: BottomControlSize.height))
+        filterSelectionButton.addConstraint(NSLayoutConstraint(item: filterSelectionButton, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: kBottomControlSize.width))
+        filterSelectionButton.addConstraint(NSLayoutConstraint(item: filterSelectionButton, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: kBottomControlSize.height))
         bottomControlsView.addConstraint(NSLayoutConstraint(item: filterSelectionButton, attribute: .CenterY, relatedBy: .Equal, toItem: actionButtonContainer, attribute: .CenterY, multiplier: 1, constant: 0))
         bottomControlsView.addConstraint(NSLayoutConstraint(item: bottomControlsView, attribute: .Right, relatedBy: .Equal, toItem: filterSelectionButton, attribute: .Right, multiplier: 1, constant: 20))
     }
@@ -719,11 +719,13 @@ public class IMGLYCameraViewController: UIViewController {
 
     private func resetHideSliderTimer() {
         hideSliderTimer?.invalidate()
-        hideSliderTimer = NSTimer.scheduledTimerWithTimeInterval(ShowFilterIntensitySliderInterval, target: self, selector: "hideFilterIntensitySlider:", userInfo: nil, repeats: false)
+        hideSliderTimer = NSTimer.scheduledTimerWithTimeInterval(kShowFilterIntensitySliderInterval, target: self, selector: "hideFilterIntensitySlider:", userInfo: nil, repeats: false)
     }
 
     private func showEditorNavigationControllerWithImage(image: UIImage) {
+        // swiftlint:disable force_cast
         let editorViewController = self.configuration.getClassForReplacedClass(IMGLYMainEditorViewController.self).init() as! IMGLYMainEditorViewController
+        // swiftlint:enable force_cast
         editorViewController.configuration = configuration
         editorViewController.highResolutionImage = image
         if let cameraController = cameraController {
@@ -769,9 +771,8 @@ public class IMGLYCameraViewController: UIViewController {
         fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
 
         let fetchResult = PHAsset.fetchAssetsWithMediaType(.Image, options: fetchOptions)
-        if fetchResult.lastObject != nil {
-            let lastAsset: PHAsset = fetchResult.lastObject as! PHAsset
-            PHImageManager.defaultManager().requestImageForAsset(lastAsset, targetSize: CGSize(width: BottomControlSize.width * 2, height: BottomControlSize.height * 2), contentMode: PHImageContentMode.AspectFill, options: PHImageRequestOptions()) { (result, info) -> Void in
+        if let lastAsset = fetchResult.lastObject as? PHAsset {
+            PHImageManager.defaultManager().requestImageForAsset(lastAsset, targetSize: CGSize(width: kBottomControlSize.width * 2, height: kBottomControlSize.height * 2), contentMode: PHImageContentMode.AspectFill, options: PHImageRequestOptions()) { (result, info) -> Void in
                 self.cameraRollButton.setImage(result, forState: UIControlState.Normal)
             }
         }
@@ -877,7 +878,7 @@ public class IMGLYCameraViewController: UIViewController {
             if filterSelectionViewConstraint.constant == 0 {
                 // Expand
                 filterSelectionController.beginAppearanceTransition(true, animated: true)
-                filterSelectionViewConstraint.constant = -1 * CGFloat(FilterSelectionViewHeight)
+                filterSelectionViewConstraint.constant = -1 * CGFloat(kFilterSelectionViewHeight)
                 UIView.animateWithDuration(animationDuration, delay: 0, usingSpringWithDamping: dampingFactor, initialSpringVelocity: 0, options: [], animations: {
                     sender?.transform = CGAffineTransformIdentity
                     self.view.layoutIfNeeded()
